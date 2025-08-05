@@ -1,0 +1,42 @@
+[
+  {
+    "id": 101,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Classic",
+    "price": 12.99,
+    "publisher": "Scribner"
+  },
+  {
+    "id": 102,
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genre": "Fiction",
+    "price": 10.50,
+    "publisher": "J. B. Lippincott & Co."
+  },
+  {
+    "id": 103,
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "price": 9.99,
+    "publisher": "Secker & Warburg"
+  },
+  {
+    "id": 104,
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "genre": "Romance",
+    "price": 8.75,
+    "publisher": "T. Egerton"
+  },
+  {
+    "id": 105,
+    "title": "The Hobbit",
+    "author": "J.R.R. Tolkien",
+    "genre": "Fantasy",
+    "price": 14.25,
+    "publisher": "Allen & Unwin"
+  }
+]

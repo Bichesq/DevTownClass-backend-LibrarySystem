@@ -1,0 +1,18 @@
+{
+  "name": "library-system",
+  "version": "1.0.0",
+  "description": "Practical exercise to learn backend dev",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Bichesq",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
