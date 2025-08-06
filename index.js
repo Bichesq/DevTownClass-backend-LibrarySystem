@@ -5,6 +5,8 @@ const PORT = 8081
 const books = require("./data/books.json");
 const users = require("./data/users.json")
 
+app.use(express.json());
+
 app.get("/", (req,res) => {
     res.status(200).json({
         message: "Server is running good ;)",
@@ -52,7 +54,7 @@ app.get("/users/:id", (req, res) => {
 })
 
 /**
-* Route: /user
+* Route: /users
 * Method: POST
 * Description: Create a new user
 * Access: Public
@@ -75,13 +77,72 @@ app.post("/users", (req, res) => {
             message: "User already exists",
         })
     } else {
+        users.push(newUser);
         return res.status(201).json({
             success: true,
             message: "User created successfully",
-            data: req.body,
+            data: users,
         })
     }
 }) 
+
+/**
+ * Route: /users
+ * Method: PUT
+ * Description: Update a user
+ * parameter: id
+ */
+app.put("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const updatedUser = req.body
+
+    const user = users.find((user) => user.id == id)
+    if (!user) {
+        return res.status(500).json({
+            message: "Oops! There is no such user!"
+        })
+    } else {
+        const userIndex = users.findIndex((user) => user.id == id);
+        users[userIndex] = { ...users[userIndex], ...updatedUser };
+        return res.status(201).json({
+          success: true,
+          message: "User updated successfully!",
+          data: users,
+        });
+    }
+})
+
+/**
+ * Route: /users
+ * Method: DELETE
+ * Description: Delete user by id
+ * parameters: id
+ * results: Delete user from list
+ */
+app.delete("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const user = users.find((user) => user.id == id)
+
+    if (!user) {
+        return res.status(500).json({
+            success: false,
+            message: "Oops! there is no such user"
+        })
+    }
+
+    if (parseInt(user.issueBook, 10) > 0) {
+      if (user.returnDate < new Date()) {
+        return res.status(500).json({
+          message: "Sorry can't delete User. Fines pending",
+        });
+      }
+    } else {
+      return res.status(200).json({
+        message: "User deleted succeessfull!",
+      });
+    }
+    
+})
 
 // app.get("*", (req,res)=> {
 //     res.status(404).json({
