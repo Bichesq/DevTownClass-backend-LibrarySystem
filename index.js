@@ -11,12 +11,77 @@ app.get("/", (req,res) => {
     })
 })
 
+/** 
+* Route: /users
+* Method: GET
+* Description: Fetch all users
+* Access: Public
+* Parameters: None
+* Returns: Array of users
+*/
+
 app.get("/users", (req, res) => {
     res.status(200).json({
         message: "Fetch Users Successfull",
         data: users,
     })
 })
+
+/**
+* Route: /users/:id
+* Method: GET
+* Description: Fetch user by ID
+* Access: Public
+* Parameters: id
+* Returns: User object
+*/
+app.get("/users/:id", (req, res) => {
+    //const id = req.params.id;
+    // or
+    const { id } = req.params;
+    const user = users.find((user) => user.id == id );
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found",
+        })
+    }
+    res.status(200).json({
+        message: "Fetch User by ID Successfull",
+        data: user,
+    })
+})
+
+/**
+* Route: /user
+* Method: POST
+* Description: Create a new user
+* Access: Public
+* Parameters: None
+* Returns: Created user object
+*/
+app.post("/users", (req, res) => {
+    const newUser = req.body;
+
+    if (!newUser) {
+        return res.status(400).json({
+            message: "User data is required",
+        });
+    }
+
+
+    const user = users.find((user) => user.id == newUser.id);
+    if (user) {
+        return res.status(400).json({
+            message: "User already exists",
+        })
+    } else {
+        return res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            data: req.body,
+        })
+    }
+}) 
 
 // app.get("*", (req,res)=> {
 //     res.status(404).json({
