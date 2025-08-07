@@ -30,11 +30,25 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
     const newBook = req.body;
     if (newBook.id) {
-        books.push(newBook);
+        const book = books.find((book) => book.id == newBook.id);
+        if (book) {
+            return res.status(400).json({
+                success: false,
+                message: "Book already exists"
+            });
+        }
+        const allBooks = [...books, newBook];
+        // books.push(newBook);
         res.status(201).json({
             success: true,
-            data: newBook
+            data: allBooks
     });
+    }
+    else {
+        res.status(400).json({
+            success: false,
+            message: "Please provide a valid book id"
+        });
     }
     
 });
@@ -95,4 +109,40 @@ router.get("/:id", (req, res) => {
         data: book
     });
 });
+
+/**
+ * Route: /:id
+ * Method: PUT
+ * Description: Update a book by id
+ * Access: Public
+ * Parameters: id
+ * Returns: Updated book
+ */
+router.put("/:id", (req, res) => {
+    const { id } = req.params;
+    const update = req.body;
+    const book = books.find((book) => book.id == id);
+    if (!book) {
+        return res.status(404).json({
+            success: false,
+            message: `Book with ${id} not found`
+        });
+    } else if (!update) {
+        return res.status(400).json({
+            success: false,
+            message: "Please provide a valid update"
+        });
+    }
+    const updated = books.map((book) => {
+        if (book.id == id) {
+            return {...book, ...update}
+        }
+        return book;
+    })
+    res.status(200).json({
+        success: true,
+        data: updated
+    });
+});
+
 module.exports = router;

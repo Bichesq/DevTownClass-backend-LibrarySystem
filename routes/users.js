@@ -117,8 +117,8 @@ router.delete("/:id", (req, res) => {
   const subscriptionType = user.subscriptionType;
   const subscriptionDuration = {
     Basic: 30,
-    Standard: 60,
-    Premium: 90,
+    Standard: 180,
+    Premium: 365,
   };
   const subscriptionEndDate = new Date(
     MsSubscription +
@@ -155,5 +155,23 @@ router.delete("/:id", (req, res) => {
     });
   }
 });
+
+/**
+ * Route: /subscription-details/:id
+ * Method: GET
+ * Description: Fetch all users subscription details
+ * Access: Public
+ * Parameters: id
+ */
+router.get("/subscription-details/:id", (req, res) => {
+    const { id } = req.params;
+    const user = users.find((user) => user.id == id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+})
 
 module.exports = router;

@@ -14,6 +14,12 @@ GET: fetch users by id
 PUT: update users by id
 DELETE: Delete user by id
 
+### /users/subscription-details/{id}
+GET: fetch user subscription details by id
+        >> Date of Subscription
+        >> Expiration date of subscription
+        >> Is there fine
+
 ### books/
 POST: create/add new books
 GET: fetch all books
