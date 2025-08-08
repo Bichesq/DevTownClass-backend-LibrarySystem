@@ -19,7 +19,7 @@
     "issueDate": "2023-10-20",
     "returnDate": "2023-11-20",
     "subscriptionType": "Basic",
-    "subscriptionDate": "2023-05-15"
+    "subscriptionDate": "2025-02-15"
   },
   {
     "id": 3,
@@ -29,7 +29,7 @@
     "issueBook": "103",
     "issueDate": "2023-10-25",
     "returnDate": "2023-11-25",
-    "subscriptionType": "Premium",
+    "subscriptionType": "Standard",
     "subscriptionDate": "2023-03-22"
   },
   {

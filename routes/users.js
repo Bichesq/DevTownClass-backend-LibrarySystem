@@ -102,6 +102,65 @@ router.put("/:id", (req, res) => {
 });
 
 /**
+ * Route: /subscription-details/:id
+ * Method: GET
+ * Description: Fetch all users subscription details
+ * Access: Public
+ * Parameters: id
+ */
+router.get("/subscription-details/:id", (req, res) => {
+  const { id } = req.params;
+  const user = users.find((user) => user.id == id);
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  const dateInDays = (data = "") => {
+    let date;
+    let days;
+    if (data === "") {
+      date = new Date();
+    } else { 
+      date = new Date(data);
+    }
+    days = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+    return days;
+  };
+
+  const subscriptionType = (date) => {
+    if (user.subscriptionType == "Basic") {
+      date += 30;
+    } else if (user.subscriptionType == "Standard") {
+      date += 180;
+    } else if (user.subscriptionType == "Premium") {
+      date += 365;
+    }
+    return date;
+  };
+
+  const returnDateInDays = dateInDays(user.returnDate);
+  const today = dateInDays();
+  const subscriptionDateInDays = dateInDays(user.subscriptionDate);
+  const subscriptionExpiry = subscriptionType(subscriptionDateInDays);
+  const daysRemaining = subscriptionExpiry - returnDateInDays;
+
+  const data = {
+    ...user,
+    isSubscriptionExpired: subscriptionExpiry < today,
+    daysLeftForExpiration: subscriptionExpiry <= today ? 0 : daysRemaining,
+    fine: returnDateInDays < today ? (subscriptionExpiry ? 100 : 50) : 0,
+  };
+
+  res.status(200).json({
+    message: "User subscription details",
+    data,
+  });
+
+})
+
+/**
  * Route: /:id
  * Method: DELETE
  * Description: Delete user by id
@@ -156,22 +215,6 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-/**
- * Route: /subscription-details/:id
- * Method: GET
- * Description: Fetch all users subscription details
- * Access: Public
- * Parameters: id
- */
-router.get("/subscription-details/:id", (req, res) => {
-    const { id } = req.params;
-    const user = users.find((user) => user.id == id);
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
 
-})
 
 module.exports = router;
