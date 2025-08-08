@@ -1,9 +1,13 @@
 const express = require("express")
-// import express from express;
+const DBconnection = require("./mongodbConnection");
 const app = express();
 const PORT = 8081
 const booksRoutes = require("./routes/books");
 const usersRoutes = require("./routes/users.js");
+const dotenv = require("dotenv");
+
+DBconnection();
+dotenv.config();
 
 app.use(express.json());
 
