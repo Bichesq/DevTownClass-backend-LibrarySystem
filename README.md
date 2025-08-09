@@ -29,7 +29,8 @@ GET: fetch book by id
 PUT: update book by id
 DELETE: delete book by id
 
-### subscript-details/
+### /books/issued/withfine
+GET: fetch all issued books with their fine
 
 
 - npm init 

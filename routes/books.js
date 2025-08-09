@@ -88,6 +88,58 @@ router.get("/issued", (req, res) => {
 });
 
 /**
+ * Route: /books/issued/withfine
+ * Method: GET
+ * Description: Fetch all issued books with fine
+ * Access: Public
+ * Parameters: None
+ * Returns: Array of issued books with fine
+ */
+router.get("/issued/withfine", (req, res) => { 
+    const userWithIssuedBooks = users.filter((user) => { 
+        if (user.issueBook) return user;
+    })
+    const issuedBookswithFine = [];
+    userWithIssuedBooks.forEach((user) => {
+        const book = books.find((book) => book.id == user.issueBook);
+        const ReturnDateInDays = new Date(user.returnDate).getTime() / (1000 * 60 * 60 * 24);
+        const today = new Date().getTime() / (1000 * 60 * 60 * 24);
+        const subscriptionTerm = {
+            Basic: 30,
+            Standard: 180,
+            Premium: 365,
+        };
+        const subscriptionDateInDays = new Date(user.subscriptionDate).getTime() / (1000 * 60 * 60 * 24);
+        const subscriptionEndDateInDays = subscriptionDateInDays + subscriptionTerm[user.subscriptionType];
+        let fine = 0;
+        if (today > subscriptionEndDateInDays) {
+            fine += 100;
+        }
+        if (today > ReturnDateInDays) {
+            fine += 50;
+        }
+        
+        book.issuedTo = user.name;
+        book.IsWithFine = today > ReturnDateInDays || today > subscriptionEndDateInDays;
+        book.fine = fine; 
+
+        if (book.IsWithFine) {
+            issuedBookswithFine.push(book);
+        }
+    })
+    if (!issuedBookswithFine.length) {
+        return res.status(404).json({
+            success: false,
+            message: "No books with fine"
+        });
+    }
+    res.status(200).json({
+        success: true,
+        data: issuedBookswithFine
+    });
+})
+
+/**
  * Route: /:id
  * Method: GET
  * Description: Fetch all books

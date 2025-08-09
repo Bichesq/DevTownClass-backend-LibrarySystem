@@ -3,9 +3,6 @@ const app = express();
 const PORT = 8081;
 const booksRoutes = require("./routes/books");
 const usersRoutes = require("./routes/users.js");
-const dotenv = require("dotenv");
-
-dotenv.config();
 
 app.use(express.json());
 
